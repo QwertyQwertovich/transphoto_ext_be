@@ -5,11 +5,13 @@ import os
 app = Flask(__name__)
 VEHICLE_POSITIONS_FILE = 'vehicle_positions.json'
 
+
 def load_vehicle_positions():
     if not os.path.exists(VEHICLE_POSITIONS_FILE):
         return []
     with open(VEHICLE_POSITIONS_FILE, 'r', encoding='utf-8') as file:
         return json.load(file)
+
 
 @app.route('/api/vehicle', methods=['GET'])
 def get_vehicle():
@@ -30,5 +32,7 @@ def get_vehicle():
 
     return jsonify(results)
 
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    context = ('/etc/letsencrypt/live/movingspirit.isgood.host/fullchain.pem', '/etc/letsencrypt/live/movingspirit.isgood.host/privkey.pem')
+    app.run(host='0.0.0.0', port=5000, debug=True, ssl_context=context)
